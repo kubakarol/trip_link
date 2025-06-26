@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:trip_link/screens/home_screen.dart';
 import 'package:trip_link/screens/register_screen.dart';
+import 'package:trip_link/screens/setup_screen.dart';
 import 'services/firebase_config.dart';
 import 'screens/welcome_screen.dart';
 import 'screens/login_screen.dart';
@@ -26,6 +27,7 @@ class MyApp extends StatelessWidget {
         '/register': (context) => const RegisterScreen(),
         '/login': (context) => const LoginScreen(),
         '/home': (context) => const HomeScreen(),
+        '/setup': (context) => const SetupScreen(),
       },
     );
   }
