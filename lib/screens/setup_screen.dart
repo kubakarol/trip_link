@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '../widgets/setup_step_bio.dart';
-import '../widgets/setup_step_location.dart';
-import '../widgets/setup_step_guide.dart';
-import '../widgets/setup_step_goal.dart';
+import '../widgets/registerSetup/setup_step_bio.dart';
+import '../widgets/registerSetup/setup_step_location.dart';
+import '../widgets/registerSetup/setup_step_guide.dart';
+import '../widgets/registerSetup/setup_step_goal.dart';
 
 class SetupScreen extends StatefulWidget {
   const SetupScreen({super.key});
