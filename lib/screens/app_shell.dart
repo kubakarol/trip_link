@@ -1,8 +1,7 @@
 // lib/screens/app_shell.dart
 import 'package:flutter/material.dart';
-import 'package:trip_link/screens/settings_screen.dart';
-import 'chat/chat_screen.dart';
-import 'home/home_screen.dart';
+import 'chat/chat_list_screen.dart';
+import 'home/swipe_screen.dart';
 import 'profile/profile_screen.dart';
 
 class AppShell extends StatefulWidget {
@@ -16,8 +15,8 @@ class _AppShellState extends State<AppShell> {
   final List<Widget> _pages = const [
     ChatScreen(),
     HomeScreen(),
-    SettingsScreen(),
-    // ProfileScreen(),
+    //SettingsScreen(),
+    ProfileScreen(),
   ];
   void _onTap(int i) => setState(() => _currentIndex = i);
 

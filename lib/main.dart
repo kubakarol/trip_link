@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:trip_link/screens/register/register_screen.dart';
-import 'package:trip_link/screens/settings_screen.dart';
-import 'package:trip_link/screens/setup_screen.dart';
+import 'package:trip_link/screens/auth/register/register_screen.dart';
+import 'package:trip_link/screens/profile/account_actions_screen.dart';
+import 'package:trip_link/screens/profile/change_password_screen.dart';
+import 'package:trip_link/screens/profile/notifications_screen.dart';
+import 'package:trip_link/screens/auth/setup_screen.dart';
 import 'services/firebase_config.dart';
-import 'screens/welcome_screen.dart';
-import 'screens/login/login_screen.dart';
+import 'screens/auth/welcome_screen.dart';
+import 'screens/auth/login/login_screen.dart';
 import 'screens/app_shell.dart';
+import 'screens/profile/language_screen.dart';
+import 'screens/profile/swipe_prefs_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,6 +28,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorSchemeSeed: Colors.blue,
         useMaterial3: true,
+        scaffoldBackgroundColor: Colors.white,
         bottomNavigationBarTheme: const BottomNavigationBarThemeData(
           backgroundColor: Colors.white,
           selectedItemColor: Colors.blue,
@@ -40,7 +45,14 @@ class MyApp extends StatelessWidget {
         '/login': (context) => const LoginScreen(),
         '/home': (context) => const AppShell(),
         '/setup': (context) => const SetupScreen(),
-        '/settings': (context) => const SettingsScreen(),
+        '/profile/settings/language': (context) => const LanguageScreen(),
+        '/profile/settings/swipe_prefs': (context) => const SwipePrefsScreen(),
+        '/profile/settings/account_actions': (context) =>
+            const AccountActionsScreen(),
+        '/profile/settings/notifications': (context) =>
+            const NotificationsScreen(),
+        '/profile/settings/change_password': (context) =>
+            const ChangePasswordScreen(),
       },
     );
   }
