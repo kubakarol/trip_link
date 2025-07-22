@@ -14,7 +14,7 @@ class _AppShellState extends State<AppShell> {
   int _currentIndex = 1;
   final List<Widget> _pages = const [
     ChatScreen(),
-    HomeScreen(),
+    SwipeScreen(),
     //SettingsScreen(),
     ProfileScreen(),
   ];

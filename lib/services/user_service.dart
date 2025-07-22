@@ -1,3 +1,5 @@
+// lib/services/user_service.dart
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -16,12 +18,30 @@ class UserService {
     required String name,
     required String lastName,
     required String email,
+    required String gender,
+    required DateTime birthdate,
   }) {
     return _firestore.collection('users').doc(uid).set({
       'name': name,
       'lastName': lastName,
       'email': email,
-      'createdAt': Timestamp.now(),
+      'gender': gender,
+      'birthdate': Timestamp.fromDate(birthdate),
+      'createdAt': FieldValue.serverTimestamp(),
+
+      // wartości domyślne dla nowych flag:
+      'isGuide': false,
+      'isTraveler': false,
+
+      // domyślne preferencje swipe’owania:
+      'preferences': {
+        'language': 'en',
+        'minAge': 18,
+        'maxAge': 99,
+        'showGuides': true,
+        'showTravelers': true,
+        // ewentualnie: 'preferredGender': 'any'
+      },
     });
   }
 

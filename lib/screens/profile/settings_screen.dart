@@ -1,9 +1,12 @@
+// lib/screens/profile/settings_screen.dart
+
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:trip_link/services/storage_service.dart';
 import 'package:trip_link/services/user_service.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -16,6 +19,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   final _userService = UserService();
   final _storageService = StorageService();
   final _formKey = GlobalKey<FormState>();
+
   final _nameCtrl = TextEditingController();
   final _lastNameCtrl = TextEditingController();
   final _locationCtrl = TextEditingController();
@@ -23,6 +27,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   final _bioCtrl = TextEditingController();
 
   bool _isGuide = false;
+  bool _isTraveler = false; // nowa flaga
   bool _loading = true;
   File? _newImage;
   String? _photoUrl;
@@ -37,13 +42,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
     setState(() => _loading = true);
     final doc = await _userService.fetchProfile();
     final data = doc.data()!;
+
     _nameCtrl.text = data['name'] ?? '';
     _lastNameCtrl.text = data['lastName'] ?? '';
     _locationCtrl.text = data['location'] ?? '';
     _travelGoalCtrl.text = data['travelGoal'] ?? '';
     _bioCtrl.text = data['bio'] ?? '';
     _isGuide = data['isGuide'] ?? false;
+    _isTraveler = data['isTraveler'] ?? false;
     _photoUrl = data['photoUrl'];
+
     setState(() => _loading = false);
   }
 
@@ -56,11 +64,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
     if (!_formKey.currentState!.validate()) return;
     setState(() => _loading = true);
 
+    // kolejność: upload avatar jeśli nowy
     String? url = _photoUrl;
     if (_newImage != null) {
       url = await _storageService.uploadAvatar(_newImage!);
     }
 
+    // aktualizujemy wszystkie pola w profilu
     await _userService.updateProfile({
       'name': _nameCtrl.text.trim(),
       'lastName': _lastNameCtrl.text.trim(),
@@ -68,6 +78,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       'travelGoal': _travelGoalCtrl.text.trim(),
       'bio': _bioCtrl.text.trim(),
       'isGuide': _isGuide,
+      'isTraveler': _isTraveler, // zapisujemy nową flagę
       'photoUrl': url,
       'updatedAt': FieldValue.serverTimestamp(),
     });
@@ -95,7 +106,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
         child: Form(
           key: _formKey,
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              // avatar + picker
               GestureDetector(
                 onTap: _pickImage,
                 child: CircleAvatar(
@@ -110,7 +123,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       : null,
                 ),
               ),
+
               const SizedBox(height: 20),
+
+              // dane tekstowe
               TextFormField(
                 controller: _nameCtrl,
                 decoration: const InputDecoration(labelText: "Name"),
@@ -130,13 +146,32 @@ class _SettingsScreenState extends State<SettingsScreen> {
               TextFormField(
                 controller: _bioCtrl,
                 decoration: const InputDecoration(labelText: "Bio"),
+                maxLines: 3,
               ),
+
+              const SizedBox(height: 16),
+
+              // nowe przełączniki
               SwitchListTile(
                 value: _isGuide,
                 onChanged: (v) => setState(() => _isGuide = v),
-                title: const Text("I'm a guide"),
+                title: const Text("I'm a guide here"),
+                subtitle: const Text(
+                  "Chcę oprowadzać podróżników w moim mieście",
+                ),
               ),
-              const SizedBox(height: 16),
+              SwitchListTile(
+                value: _isTraveler,
+                onChanged: (v) => setState(() => _isTraveler = v),
+                title: const Text("I'm a traveler"),
+                subtitle: const Text(
+                  "Szukam przewodnika w miejscu, do którego jadę",
+                ),
+              ),
+
+              const SizedBox(height: 24),
+
+              // przycisk save
               ElevatedButton(
                 onPressed: _saveChanges,
                 child: const Text("Save"),
