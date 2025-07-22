@@ -1,4 +1,3 @@
-// lib/main.dart
 import 'package:flutter/material.dart';
 import 'package:trip_link/services/firebase_config.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -20,12 +19,11 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    // 1) Generujemy ColorScheme na bazie niebieskiego z seed
     final base = ColorScheme.fromSeed(seedColor: Colors.blue);
-    // 2) Nadpisujemy tło (background) i surface na biały
     final scheme = base.copyWith(
       background: Colors.white,
       surface: Colors.white,
@@ -36,7 +34,6 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: true,
         colorScheme: scheme,
-        // ustalamy tło Scaffoldów i podłoże widgetów
         scaffoldBackgroundColor: scheme.background,
         canvasColor: scheme.surface,
         cardColor: scheme.surface,

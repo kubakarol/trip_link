@@ -1,11 +1,11 @@
-// lib/screens/app_shell.dart
 import 'package:flutter/material.dart';
 import 'chat/chat_list_screen.dart';
 import 'home/swipe_screen.dart';
 import 'profile/profile_screen.dart';
 
 class AppShell extends StatefulWidget {
-  const AppShell({super.key});
+  const AppShell({Key? key}) : super(key: key);
+
   @override
   State<AppShell> createState() => _AppShellState();
 }
@@ -13,15 +13,15 @@ class AppShell extends StatefulWidget {
 class _AppShellState extends State<AppShell> {
   int _currentIndex = 1;
   final List<Widget> _pages = const [
-    ChatScreen(),
+    ChatListScreen(),
     SwipeScreen(),
-    //SettingsScreen(),
     ProfileScreen(),
   ];
+
   void _onTap(int i) => setState(() => _currentIndex = i);
 
   @override
-  Widget build(BuildContext c) {
+  Widget build(BuildContext context) {
     return Scaffold(
       body: IndexedStack(index: _currentIndex, children: _pages),
       floatingActionButton: FloatingActionButton(
